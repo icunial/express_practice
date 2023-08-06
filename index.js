@@ -21,7 +21,11 @@ app.get("/api/members", (req, res) => {
 
 // Get single member
 app.get("/api/members/:id", (req, res) => {
-  res.send(req.params.id);
+  res.json(
+    members.filter((member) => {
+      return member.id === parseInt(req.params.id);
+    })
+  );
 });
 
 // Set static folder

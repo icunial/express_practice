@@ -45,4 +45,23 @@ router.post("/", (req, res) => {
   res.status(201).json(members);
 });
 
+// Update Member
+router.put("/:id", (req, res) => {
+  const found = members.some((member) => member.id === parseInt(req.params.id));
+
+  if (found) {
+    const updateMember = req.body;
+    members.forEach((member) => {
+      if (member.id === parseInt(req.params.id)) {
+        member.name = updateMember.name ? updateMember.name : member.name;
+        member.email = updateMember.email ? updateMember.email : member.email;
+      }
+    });
+  } else {
+    res.status(404).json({
+      msg: `Member with the id: ${req.params.id} not found!`,
+    });
+  }
+});
+
 module.exports = router;

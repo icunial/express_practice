@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-const members = require("./Members");
 
 const logger = require("./middleware/logger");
 
@@ -14,30 +13,11 @@ const app = express();
 // Init middleware
 //app.use(logger);
 
-// Gets all members
-app.get("/api/members", (req, res) => {
-  res.json(members);
-});
-
-// Get single member
-app.get("/api/members/:id", (req, res) => {
-  const found = members.some((member) => member.id === parseInt(req.params.id));
-
-  if (found) {
-    res.json(
-      members.filter((member) => {
-        return member.id === parseInt(req.params.id);
-      })
-    );
-  } else {
-    res.status(404).json({
-      msg: `Member with the id: ${req.params.id} not found!`,
-    });
-  }
-});
-
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")));
+
+// Member Api Routes
+app.use("/api/members", require("./routes/api/members"));
 
 const PORT = process.env.PORT || 5000;
 
